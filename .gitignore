@@ -1,0 +1,22 @@
+# Model files
+model/*.pt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+
+# Temporary files
+*.mp4
+static/upload/*
+static/predict/*
+
+# VS Code
+.vscode/
+
+# Environment
+.env

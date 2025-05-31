@@ -1,0 +1,219 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu elements
+    const navbar = document.querySelector('.navbar');
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navMenu = document.querySelector('.nav-menu');
+    const navOverlay = document.querySelector('.nav-overlay');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const hamburger = mobileMenuBtn ? mobileMenuBtn.querySelector('.hamburger') : null;
+  
+  // Debug element selection
+  console.log('Mobile Menu Elements:', {
+    navbar: !!navbar,
+    mobileMenuBtn: !!mobileMenuBtn,
+    navMenu: !!navMenu,
+    navOverlay: !!navOverlay,
+    navLinksCount: navLinks.length  });
+
+  // Function to toggle mobile menu
+  function toggleMobileMenu(e) {
+    if (e) {
+      e.preventDefault();
+    }
+
+    const isMenuOpen = navMenu.classList.contains('active');
+  // Debug element selection
+  console.log('Mobile Menu Elements:', {
+    navbar: !!navbar,
+    mobileMenuBtn: !!mobileMenuBtn,
+    navMenu: !!navMenu,
+    navOverlay: !!navOverlay,
+    navLinksCount: navLinks.length
+  });
+  
+  // Mobile Menu Toggle Function  function toggleMobileMenu(e) {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    
+    // Toggle menu state
+    mobileMenuBtn.classList.toggle("active");
+    navMenu.classList.toggle("active");
+    navOverlay.classList.toggle("active");
+    
+    // Toggle body scroll
+    document.body.style.overflow = navMenu.classList.contains("active") ? "hidden" : "";
+    
+    console.log("Menu toggled:", navMenu.classList.contains("active") ? "open" : "closed");
+  }
+  
+  // Event Listeners
+  if (mobileMenuBtn) {
+    console.log("Adding click listener to mobile menu button");
+    mobileMenuBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMobileMenu();
+    });
+  }
+
+  // Close menu when clicking overlay
+  if (navOverlay) {
+    navOverlay.addEventListener("click", () => {
+      if (navMenu.classList.contains("active")) {
+        toggleMobileMenu();
+      }
+    });
+  }
+
+  // Close menu when clicking a link
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (navMenu.classList.contains("active")) {
+        toggleMobileMenu();
+      }
+    });
+  });
+
+  // Handle resize events
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      if (window.innerWidth > 768 && navMenu.classList.contains("active")) {
+        toggleMobileMenu();
+      }
+    }, 250);
+  });
+
+  // Handle escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navMenu.classList.contains("active")) {
+      toggleMobileMenu();
+    }
+  });
+
+  // Navbar scroll effect
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.remove("scrolled");
+    }
+  });
+});
+
+// Upload area interaction
+const uploadArea = document.querySelector(".upload-area");
+const fileInput = document.getElementById("fileInput");
+
+if (uploadArea && fileInput) {
+  uploadArea.addEventListener("click", () => fileInput.click());
+
+  uploadArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    uploadArea.classList.add("drag-over");
+  });
+
+  uploadArea.addEventListener("dragleave", () => {
+    uploadArea.classList.remove("drag-over");
+  });
+
+  uploadArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove("drag-over");
+    fileInput.files = e.dataTransfer.files;
+  });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files.length > 0) {
+      const fileName = fileInput.files[0].name;
+      uploadArea.querySelector("p").textContent = `Selected file: ${fileName}`;
+    }
+  });
+}
+
+// Smooth scroll for navigation links
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if (target) {
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+      // Close mobile menu if open
+      document.querySelector(".nav-links").classList.remove("active");
+    }
+  });
+});
+
+// Active section highlighting
+window.addEventListener("scroll", () => {
+  let current = "";
+  const sections = document.querySelectorAll("section");
+
+  sections.forEach((section) => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (scrollY >= sectionTop - sectionHeight / 3) {
+      current = section.getAttribute("id");
+    }
+  });
+
+  document.querySelectorAll(".nav-links a").forEach((link) => {
+    link.classList.remove("active");
+    if (link.getAttribute("href").substring(1) === current) {
+      link.classList.add("active");
+    }
+  });
+});
+
+// Form validation and submission
+const contactForm = document.getElementById("contactForm");
+if (contactForm) {
+  contactForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    // Add your form submission logic here
+    alert("Message sent successfully!");
+    contactForm.reset();
+  });
+}
+
+// Add loading animation for video upload
+const uploadForm = document.getElementById("uploadForm");
+if (uploadForm) {
+  uploadForm.addEventListener("submit", () => {
+    const submitBtn = uploadForm.querySelector(".submit-btn");
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+    submitBtn.disabled = true;
+  });
+}
+
+document
+  .getElementById("uploadForm")
+  .addEventListener("submit", function (event) {
+    console.log("Form Submitted");
+    event.preventDefault(); // Prevent the default form submission
+
+    // Create FormData object
+    const formData = new FormData(this);
+
+    // Submit form data via Fetch API
+    fetch(this.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.text())
+      .then((data) => {
+        // Update the message container with the response message
+        document.getElementById("message").classList.remove("hidden");
+        document.getElementById("message").querySelector("h2").textContent =
+          "Your upload was successful!";
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });

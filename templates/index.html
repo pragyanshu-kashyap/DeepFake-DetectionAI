@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DeepFake Detection</title>
+    <link rel="stylesheet" href="../static/css/style.css" />
+    <link rel="stylesheet" href="../static/css/mobile-menu.css" />
+    <link rel="stylesheet" href="../static/css/results.new.css" />
+    <link
+      rel="shortcut icon"
+      href="../../static/images/logo.png"
+      type="image/x-icon"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <img src="../../static/images/logo.png" alt="logo" />
+          <span>DeepFake Detection</span>
+        </div>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+          <span class="hamburger"></span>
+        </button>
+        <div class="nav-menu">
+          <ul class="nav-links">
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="nav-overlay"></div>
+
+    <section id="home" class="hero-section">
+      <div class="hero-content">
+        <h1>Detect DeepFakes with AI</h1>
+        <p>
+          Advanced deep learning technology to identify manipulated videos with
+          high accuracy
+        </p>
+        <a href="#detector" class="cta-button">Try it Now</a>
+      </div>
+      <div class="hero-image">
+        <img
+          src="../../static/images/lilac_specified_background_image 1.png"
+          alt="AI Detection"
+        />
+      </div>
+    </section>
+
+    <section id="detector" class="detector-section">
+      <div class="detector-container">
+        <h2>Upload Your Video</h2>
+        <p>Drag and drop your video or click to upload</p>
+        <form
+          id="uploadForm"
+          method="POST"
+          action="#"
+          enctype="multipart/form-data"
+        >
+          <div class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <input
+              type="file"
+              id="fileInput"
+              name="file_name"
+              accept="video/*"
+              required
+            />
+            <p>Supported formats: MP4, AVI, MOV</p>
+          </div>
+          <button type="submit" class="submit-btn">Analyze Video</button>
+        </form>
+        <div id="message" class="{{ 'hidden' if not message else '' }}">
+          <div class="result-container">
+            <div class="result-text">
+              <h3 class="{{ 'real' if message == 'REAL VIDEO' else 'fake' }}">
+                <i
+                  class="fas {{ 'fa-check-circle' if message == 'REAL VIDEO' else 'fa-exclamation-triangle' }}"
+                ></i>
+                {{ message }}
+              </h3>
+              {% if confidence_score %}
+              <div class="confidence-score">
+                <h3>Analysis Confidence</h3>
+                <div class="score-circle">
+                  <span>{{ confidence_score }}%</span>
+                </div>
+                <p class="score-description">
+                  {% if confidence_score > 90 %} Extremely High Confidence {%
+                  elif confidence_score > 75 %} High Confidence {% elif
+                  confidence_score > 50 %} Moderate Confidence {% else %} Low
+                  Confidence {% endif %}
+                </p>
+              </div>
+              {% endif %}
+            </div>
+            {% if image_data %}            <div class="result-image">
+              <div class="result-image-header">
+                <span><i class="fas fa-chart-bar"></i> Analysis Result</span>
+                <span class="timestamp">{{ timestamp }}</span>
+              </div>
+              <div class="result-image-wrapper ">
+                <img
+                  src="data:image/jpeg;base64,{{ image_data }}"
+                  alt="Detection Analysis Result"
+                  loading="lazy"
+                  class="image-size"
+                />
+              <div class="image-caption">
+                <i class="fas fa-info-circle"></i>
+                {% if message == 'REAL VIDEO' %} No manipulation detected in
+                this video {% else %} Potential manipulation detected in this
+                video {% endif %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="about" class="about-section">
+      <div class="about-container">
+        <div class="about-header">
+          <h2>About Our Technology</h2>
+          <div class="section-divider">
+            <span class="divider-line"></span>
+            <i class="fas fa-robot"></i>
+            <span class="divider-line"></span>
+          </div>
+        </div>
+        <div class="about-content">
+          <div class="about-text">
+            <p class="lead-text">
+              Harnessing the power of advanced AI to combat digital deception
+            </p>
+            <p class="description-text">
+              Our cutting-edge deepfake detection system combines
+              state-of-the-art deep learning models with sophisticated computer
+              vision techniques. We analyze multiple layers of video content,
+              including facial movements, lighting inconsistencies, and temporal
+              patterns to identify manipulated content with high precision.
+            </p>
+          </div>
+          <div class="tech-stats">
+            <div class="stat-item">
+              <span class="stat-number">99%</span>
+              <span class="stat-label">Detection Accuracy</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">&lt;2s</span>
+              <span class="stat-label">Processing Time</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">100K+</span>
+              <span class="stat-label">Videos Analyzed</span>
+            </div>
+          </div>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-brain"></i>
+            </div>
+            <div class="feature-content">
+              <h3>Advanced AI</h3>
+              <p>
+                Powered by deep learning neural networks for precise detection
+              </p>
+              <ul class="feature-list">
+                <li><i class="fas fa-check"></i> LSTM Architecture</li>
+                <li><i class="fas fa-check"></i> ResNet Integration</li>
+                <li><i class="fas fa-check"></i> Real-time Processing</li>
+              </ul>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <div class="feature-content">
+              <h3>Performance</h3>
+              <p>Lightning-fast analysis with robust accuracy</p>
+              <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Quick Processing</li>
+                <li><i class="fas fa-check"></i> Low Resource Usage</li>
+                <li><i class="fas fa-check"></i> Scalable Architecture</li>
+              </ul>
+            </div>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="feature-content">
+              <h3>Reliability</h3>
+              <p>Trusted detection with proven results</p>
+              <ul class="feature-list">
+                <li><i class="fas fa-check"></i> High Accuracy Rate</li>
+                <li><i class="fas fa-check"></i> Low False Positives</li>
+                <li><i class="fas fa-check"></i> Continuous Updates</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="team" class="team-section">
+      <div class="team-container">
+        <h2>Meet Our Team</h2>
+        <div class="team-grid">
+          <!-- Team Member Cards -->
+          <div class="team-card">
+            <div class="member-image">
+              <img
+                src="../../static/images/Untitled-2.png"
+                alt="Bhagaban Paul"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Bhagaban Paul</h3>
+              <p>Model Training & Frontend Developer</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/bhagaban-paul-380350278/"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/bhagabanpaul62" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="member-image">
+              <img src="../../static/images/joi.jpg" alt="Joydip Chakraborty" />
+            </div>
+            <div class="member-info">
+              <h3>Joydip Chakraborty</h3>
+              <p>Model Inference & Backend Developer</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/joydip-chakraborty"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/XyonX" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="member-image">
+              <img
+                src="../../static/images/WhatsApp Image 2024-09-04 at 01.32.06_c21b19fe.jpg"
+                alt="Indrasi Das"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Indrasi Das</h3>
+              <p>UIUX Designer</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/indrasi-das-434537223?lipi=urn%3Ali%3Apage%3Ad_flagship3_feed%3BXseGWrC3TSC46FvUjhBIVg%3D%3D"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/indrasi-das" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="member-image">
+              <img
+                src="../../static/images/Kaustav Sadhukhan Photo - kaustav sadhukhan.jpeg"
+                alt="Kaustav Sadhukhan"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Kaustav Sadhukhan</h3>
+              <p>Research & Documentation</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/kaustav-sadhukhan-51669a291?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/Ikaris2202" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="member-image">
+              <img
+                src="../../static/images/profile pic - abhik banerjee.jpg"
+                alt="Abhik Banerjee"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Abhik Banerjee</h3>
+              <p>Data Analyst</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/abhi-banerjee-b2a490203/"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/AVI-NEWBEE" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="team-card">
+            <div class="member-image">
+              <img
+                src="../../static/images/photo-output - prakash mahato.jpeg"
+                alt="Prakash Mahato"
+              />
+            </div>
+            <div class="member-info">
+              <h3>Prakash Mahato</h3>
+              <p>Photographer & Backup</p>
+              <div class="social-links">
+                <a
+                  href="https://www.linkedin.com/in/prakash-mahato-3b1460325/"
+                  target="_blank"
+                >
+                  <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="https://github.com/prakash0012" target="_blank">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <div class="contact-container">
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p>
+            Have questions about our technology? We'd love to hear from you.
+          </p>
+        </div>
+        <form id="contactForm" class="contact-form">
+          <div class="form-group">
+            <input type="text" id="user" placeholder="Full Name" required />
+          </div>
+          <div class="form-group">
+            <input
+              type="email"
+              id="email"
+              placeholder="Email Address"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              id="textarea"
+              placeholder="Your Message"
+              required
+            ></textarea>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="submit-btn">Send Message</button>
+            <button type="reset" class="reset-btn">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2024 Tech Titans. All Rights Reserved.</p>
+        <div class="social-links">
+          <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../static/javascript/script.js"></script>
+  </body>
+</html>

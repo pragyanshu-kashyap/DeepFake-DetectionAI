@@ -1,0 +1,8 @@
+flask==3.0.2
+torch==2.2.1
+torchvision==0.17.1
+opencv-python-headless==4.9.0.80  # Using headless version for deployment
+numpy==1.26.4
+pillow==10.2.0
+requests==2.31.0  # For downloading model file
+gunicorn==21.2.0  # For production server
