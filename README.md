@@ -64,7 +64,7 @@ Note: When contributing, please do not commit the model file (`best.pt`). Instea
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 📬 Contact
-For questions or feedback, email bhagabanpauloffcial@gmail.com. 📧
+For questions or feedback, email:- bhagabanpauloffcial@gmail.com or pragyanshukashyap30092001@gmail.com 📧
 
 🙏 Acknowledgements
 
